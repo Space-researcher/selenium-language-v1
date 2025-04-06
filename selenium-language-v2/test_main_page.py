@@ -12,6 +12,7 @@ def test_guest_can_go_to_login_page(browser):
     page.open()                      # открываем страницу
    # Медод 1 переход на новую страницу
    #  login_page = page.go_to_login_page()
+    # у вызываемого метода был  return LoginPage(browser=self.browser, url=self.browser.current_url)
    #  login_page.should_be_login_page()
     # Медод 2 переход на новую страницу - Инициализируем LoginPage в теле теста
     page.go_to_login_page()

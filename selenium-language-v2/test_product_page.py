@@ -4,7 +4,7 @@ import pytest
 
 
 # Параметризация
-# offer7 должен падать из-за нназвания книги "Coders at Work book" вместо "Coders at Work"
+# offer7 должен падать из-за названия книги "Coders at Work book" вместо "Coders at Work"
 @pytest.mark.parametrize('link', ["http://selenium1py.pythonanywhere.com/catalogue/coders-at-work_207/?promo=offer0",
                                   "http://selenium1py.pythonanywhere.com/catalogue/coders-at-work_207/?promo=offer1",
                                   "http://selenium1py.pythonanywhere.com/catalogue/coders-at-work_207/?promo=offer2",
@@ -23,6 +23,46 @@ def test_guest_can_add_product_to_basket(browser, link):
     page = ProductPage(browser, link)
     page.open()
     page.should_be_able_by_a_product()
+    # Методы заказа make_an_order() и решения задачи solve_quiz_and_get_code() вызываются изнутри
+
+def test_guest_should_see_login_link_on_product_page(browser):
+    link = "http://selenium1py.pythonanywhere.com/en-gb/catalogue/the-city-and-the-stars_95/"
+    page = ProductPage(browser, link)
+    page.open()
+    page.should_be_login_link()
+
+def test_guest_can_go_to_login_page_from_product_page(browser):
+    link = "http://selenium1py.pythonanywhere.com/en-gb/catalogue/the-city-and-the-stars_95/"
+    page = ProductPage(browser, link)
+    page.open()
+    # Переход на страницу логина
+    # page.go_to_login_page_invalid_link() #  будет фейл из-за неправильного селектора
+    page.go_to_login_page()
+    page.should_be_login_link()
+
+def test_guest_cant_see_success_message(browser):
+    link = "http://selenium1py.pythonanywhere.com/catalogue/coders-at-work_207/?promo=offer0"
+    page = ProductPage(browser, link)
+    page.open()
+    # Заказ не делаем - соответственно, выплывающего элемента нет
+    page.should_not_be_success_message()  # Проверяем, есть ли сообщение об успешном добавлении товара
+
+def test_guest_cant_see_success_message_after_adding_product_to_basket(browser):
+    link = "http://selenium1py.pythonanywhere.com/catalogue/coders-at-work_207/?promo=offer0"
+    page = ProductPage(browser, link)
+    page.open()
+    page.make_an_order()  # Делаем заказ
+    page.should_not_be_success_message()  # Тест падает
+
+# Тест на проверку исчезающих элементов должен ПАДАТЬ т.к. никакие элементы здесь не исчезают
+def test_message_disappeared_after_adding_product_to_basket(browser):
+    link = "http://selenium1py.pythonanywhere.com/catalogue/coders-at-work_207/?promo=offer0"
+    page = ProductPage(browser, link)
+    page.open()
+    page.make_an_order()  # Делаем заказ
+    page.solve_quiz_and_get_code()  # Решаем задачу
+    page.should_disappear_message()  #  Проверяем, что сообщение о добавлении товара пропадает
+
 
 # def test_can_read_name(browser):
 #     link = "http://selenium1py.pythonanywhere.com/catalogue/the-shellcoders-handbook_209/?promo=newYear"

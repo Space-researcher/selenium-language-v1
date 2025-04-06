@@ -31,11 +31,9 @@ class ProductPage(BasePage):
         price_element = self.browser.find_element(*ProductPageLocators.PRICE)
         price1 = price_element.text
         time.sleep(5)
-        # Жмём кнопку
-        button1 = self.browser.find_element(*ProductPageLocators.ADD_BTN)
-        button1.click()
-        # Рещаем задачу
-        self.solve_quiz_and_get_code()
+
+        self.make_an_order()    # Делаем заказ
+        self.solve_quiz_and_get_code() # Решаем задачу
 
         # Ищем сообщение о добавлении книги в корзину
         # HTML code
@@ -77,3 +75,11 @@ class ProductPage(BasePage):
         # Проверка отображения в корзине.
         assert name1 == name2, "Name is not expected"
         assert price1 == price2, "Price is not expected"
+
+    def should_not_be_success_message(self):
+        assert self.is_not_element_present(*ProductPageLocators.DIV_1), \
+           "Success message is presented, but should not be"
+
+    def should_disappear_message(self):
+        assert self.is_disappeared(*ProductPageLocators.DIV_1), \
+           "Success message is presented during 4 sec, but should disappear"
