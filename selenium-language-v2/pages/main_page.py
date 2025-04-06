@@ -14,6 +14,10 @@ class MainPage(BasePage):
         # Метод 1 - Инициализируем и возвращаем новый объект
         # return LoginPage(browser=self.browser, url=self.browser.current_url)
         # Метод 2 - Инициализируем LoginPage в теле теста в файле test_main_page.py
+        # # добавление алерта, если он вдруг появился на странице
+        # # если алерта нет - будет NoAlertPresentException: Message: no such alert
+        # alert = self.browser.switch_to.alert
+        # alert.accept()
 
     def should_be_login_link(self):
         # символ * это кортеж значений
