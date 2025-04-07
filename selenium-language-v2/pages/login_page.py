@@ -11,6 +11,7 @@ class LoginPage(BasePage):
         self.should_be_login_url()
         self.should_be_login_form()
         self.should_be_register_form()
+        #self.register_new_user()  # Работает и без этого, не ругается на недостающие параметры
 
     def should_be_login_url(self):
         # https://stepik.org/lesson/36285/step/9?unit=162401
@@ -26,4 +27,17 @@ class LoginPage(BasePage):
         # реализуйте проверку, что есть форма регистрации на странице
         # assert True
         assert self.is_element_present(*LoginPageLocators.REGISTER_FORM), "Register form is not presented"
+
+    def register_new_user(self, email, password):
+        # принимает две строки и регистрирует пользователя. Реализуйте его, описав соответствующие элементы страницы.
+
+        r1 = self.browser.find_element(*LoginPageLocators.REGISTERATION_EMAIL)   # find_element но НЕ find_elementS
+        r1.send_keys(email)
+        r2 = self.browser.find_element(*LoginPageLocators.REGISTERATION_PWD1)
+        r2.send_keys(password)
+        r3 = self.browser.find_element(*LoginPageLocators.REGISTERATION_PWD2)
+        r3.send_keys(password)
+        rbtn = self.browser.find_element(*LoginPageLocators.REGISTERATION_BTN)
+        rbtn.click()
+
 

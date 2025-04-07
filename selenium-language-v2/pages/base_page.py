@@ -9,6 +9,7 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from .locators import ProductPageLocators
 from .locators import BasePageLocators
+from .locators import BasketPageLocators
 import math
 
 
@@ -50,6 +51,10 @@ class BasePage():
         except TimeoutException:
             return True
         return False
+
+    def go_to_basket_page(self):
+        link = self.browser.find_element(*BasketPageLocators.BASKET_LINK)
+        link.click()
 
     def is_disappeared(self, how, what, timeout=4):
         # Делаем заказ, находим элемент
@@ -94,3 +99,34 @@ class BasePage():
         name = names[0].text
         print("Имя в корзине = ", name)
         return name
+
+    # Метод для финального задания 4.3
+    # Если пользователь зарегистрирован - появляется кнопка Logout
+    def should_be_authorized_user(self):
+        assert self.is_element_present(*BasePageLocators.USER_LOGOUT), "User icon is not presented," \
+                                                                     " probably unauthorised user"
+    languages = {
+        "ar": "سلة التسوق فارغة",
+        "ca": "La seva cistella està buida.",
+        "cs": "Váš košík je prázdný.",
+        "da": "Din indkøbskurv er tom.",
+        "de": "Ihr Warenkorb ist leer.",
+        "en": "Your basket is empty.",
+        "en-gb": "Your basket is empty.",
+        "en-US": "Your basket is empty.",
+        "el": "Το καλάθι σας είναι άδειο.",
+        "es": "Tu carrito esta vacío.",
+        "fi": "Korisi on tyhjä",
+        "fr": "Votre panier est vide.",
+        "it": "Il tuo carrello è vuoto.",
+        "ko": "장바구니가 비었습니다.",
+        "nl": "Je winkelmand is leeg",
+        "pl": "Twój koszyk jest pusty.",
+        "pt": "O carrinho está vazio.",
+        "pt-br": "Sua cesta está vazia.",
+        "ro": "Cosul tau este gol.",
+        "ru": "Ваша корзина пуста",
+        "sk": "Váš košík je prázdny",
+        "uk": "Ваш кошик пустий.",
+        "zh-cn": "Your basket is empty.",
+    }

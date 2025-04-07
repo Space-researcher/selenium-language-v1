@@ -11,7 +11,6 @@ class MainPage(BasePage):
     def __init__(self, *args, **kwargs):
         super(MainPage, self).__init__(*args, **kwargs)
 
-
     # def go_to_login_page(self):
     #     # Находим кнопку, кликаем, переходим на новую страницу
     #     login_link = self.browser.find_element(*MainPageLocators.LOGIN_LINK)

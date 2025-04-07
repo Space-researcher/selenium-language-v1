@@ -8,6 +8,15 @@ from .locators import ProductPageLocators
 from .base_page import BasePage
 import time
 
+# Самодеятельность, чтобы убрать NameError: name 'ProductFactory' is not defined
+# при запуске pytest -s -m login .\test_product_page.py
+class ProductFactory:
+    def __init__(self, title):
+        self.title = title
+        self.link = f"http://selenium1py.pythonanywhere.com/en-gb/catalogue/{title.replace(' ', '_')}"
+    def delete(self):
+        pass  # You can log or simulate deletion here
+
 # Наследование от BasePage
 class ProductPage(BasePage):
     def should_be_product_page(self):
@@ -24,6 +33,12 @@ class ProductPage(BasePage):
 
 
     def should_be_able_by_a_product(self):
+        # После регистрации пользователя попадаем на https://selenium1py.pythonanywhere.com/en-gb/
+        # Выбираем первую рекомендованную книгу
+        button0 = self.browser.find_element(*ProductPageLocators.CHOSE_PROPOSED_BOOK)
+        button0.click()
+        time.sleep(1)
+        # Попадаем в каталог http://selenium1py.pythonanywhere.com/en-gb/catalogue/the-age-of-the-pussyfoot_89/
         # Читаем имя
         name_element = self.browser.find_element(*ProductPageLocators.NAME)
         name1 = name_element.text
@@ -32,8 +47,8 @@ class ProductPage(BasePage):
         price1 = price_element.text
         time.sleep(5)
 
-        self.make_an_order()    # Делаем заказ
-        self.solve_quiz_and_get_code() # Решаем задачу
+        self.make_an_order()    # Делаем заказ base_page.py
+        # self.solve_quiz_and_get_code() # Решаем задачу - это теперь не нужно
 
         # Ищем сообщение о добавлении книги в корзину
         # HTML code
