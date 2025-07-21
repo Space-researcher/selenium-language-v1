@@ -17,12 +17,12 @@ def browser(request):
     print("\nquit browser..")
     browser.quit()
 
-# # На всякий случай - простая фикстура, которая возвращает браузер
+# # Just in case - a simple fixture that returns the browser
 # @pytest.fixture
 # def browser():
 #     print("\nstart browser for test..")
 #     browser = webdriver.Chrome()
 #     yield browser
-#     # этот код выполнится после завершения теста
+#     # this code will be executed after the test is completed
 #     print("\nquit browser..")
 #     browser.quit()
