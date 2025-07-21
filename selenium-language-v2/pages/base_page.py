@@ -1,5 +1,5 @@
 '''
-Создание объекта - страницы
+Creating an object - page
 '''
 from selenium.common.exceptions import NoSuchElementException
 from selenium.common.exceptions import NoAlertPresentException
@@ -28,7 +28,7 @@ class BasePage():
             return False
         return True
 
-    # Методы переходов на страницы логинов - универсальные
+    # Methods for transitions to login pages are universal
     def go_to_login_page_invalid_link(self):
         link = self.browser.find_element(*BasePageLocators.LOGIN_LINK_INVALID)
         link.click()
@@ -40,10 +40,10 @@ class BasePage():
     def should_be_login_link(self):
         assert self.is_element_present(*BasePageLocators.LOGIN_LINK), "Login link is not presented"
 
-    #  Отрицательные проверки
+    #  Negative checks
     def is_not_element_present(self, how, what, timeout=4):
-        # Открываем страницу, заказ НЕ делаем, и проверяем, есть ли всплывающий элемент
-        # Упадет, как только увидит искомый элемент. Не появился: успех, тест зеленый.
+        # Open the page, do NOT make an order, and check if there is a pop-up element
+        # Will fall as soon as it sees the element it is looking for. Didn't appear: success, test is green.
         try:
             WebDriverWait(self.browser, timeout).until(EC.presence_of_element_located((how, what)))
         except TimeoutException:
@@ -55,8 +55,8 @@ class BasePage():
         link.click()
 
     def is_disappeared(self, how, what, timeout=4):
-        # Делаем заказ, находим элемент
-        # Тест будет ждать 4 сек, пока элемент не исчезнет
+        # Make an order, find an element
+        # The test will wait 4 seconds until the element disappears.
         try:
             WebDriverWait(self.browser, timeout, 1, TimeoutException). \
                 until_not(EC.presence_of_element_located((how, what)))
@@ -68,40 +68,40 @@ class BasePage():
         button1 = self.browser.find_element(*ProductPageLocators.ADD_BTN)
         button1.click()
 
-    # Код для решения задачи во всплывающем окне
+    # Code to solve the problem in the pop-up window
     def solve_quiz_and_get_code(self):
         alert = self.browser.switch_to.alert
         x = alert.text.split(" ")[2]
         answer = str(math.log(abs((12 * math.sin(float(x))))))
-        alert.send_keys(answer)   # Решаем задачу, вводим решение
+        alert.send_keys(answer)   # Solve the problem, enter the solution
         alert.accept()
         try:
-            alert = self.browser.switch_to.alert   # Получаем второй алерт с ответом
+            alert = self.browser.switch_to.alert   # Receive a second alert with a response
             alert_text = alert.text
             print(f"Your code: {alert_text}")
             alert.accept()
         except NoAlertPresentException:
             print("No second alert presented")
 
-    # Методы для поиска цены и имени в корзине
+    # Methods for finding price and name in cart
     def find_price_in_backet(self):
-        # Ищем новые элементы для проверки - в корзине несколько книг, выбираем первую
+        # We are looking for new items to check - there are several books in the basket, we select the first one
         prices = self.browser.find_elements(*ProductPageLocators.PRICE_IN_BASKET)
         price = prices[0].text
-        print("Цена в корзине = ", price)
+        print("Price in cart = ", price)
         return price
 
     def find_name_in_backet(self):
         names = self.browser.find_elements(*ProductPageLocators.NAME_IN_BASKET)
         name = names[0].text
-        print("Имя в корзине = ", name)
+        print("Name in cart = ", name)
         return name
 
-    # Проверка, что если пользователь зарегистрирован - появляется кнопка Logout
+    # Checking that if the user is registered, the Logout button appears
     def should_be_authorized_user(self):
         assert self.is_element_present(*BasePageLocators.USER_LOGOUT), "User icon is not presented," \
                                                                      " probably unauthorised user"
-    # Сообщения о наличии товара в корзине на разных языках
+    # Messages about the availability of goods in the basket in different languages
     languages = {
         "ar": "سلة التسوق فارغة",
         "ca": "La seva cistella està buida.",
